@@ -2,10 +2,12 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
+    "mongoose": "^7.5.3",
     "nodemon": "^3.0.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "watch": "node-sass --watch public/scss --output public/css/"
   },
   "name": "projectmanager",
   "version": "1.0.0",
@@ -22,6 +24,7 @@
   "homepage": "https://github.com/chaubon132109/ProjectManager#readme",
   "description": "",
   "devDependencies": {
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "node-sass": "^9.0.0"
   }
 }
