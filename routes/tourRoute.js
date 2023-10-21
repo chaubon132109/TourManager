@@ -8,4 +8,5 @@ route
 route
     .route('/:id')
     .get(tourController.getTour)
+    .delete(tourController.deleteTour)
 module.exports = route;
