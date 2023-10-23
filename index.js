@@ -1,10 +1,12 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const PORT = 3000;
-const {engine} = require("express-handlebars");
-const path = require('path')
-const connectDB = require('./config/database')
-const route = require('./routes/v1/index')
+const dotenv = require('dotenv');
+const PORT = 3000||process.env.PORT;
+const {engine} = require('express-handlebars');
+const path = require('path');
+const connectDB = require('./config/database');
+const route = require('./routes/v1/index');
+dotenv.config();
 //static file
 app.use(express.static('public'))
 //view engine
@@ -17,6 +19,6 @@ app.set('views','./views');
 connectDB();
 app.use(express.json());
 route(app);
-app.listen(3000, ()=>{
+app.listen(PORT, ()=>{
     console.log(`http://localhost:${PORT}`)
 });

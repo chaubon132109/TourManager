@@ -18,7 +18,7 @@ let getAllUsers = asyncHandle(async(req,res,next)=>{
     });
 });
 let getUser = asyncHandle(async(req,res,next)=>{
-    const user = await User.findById(req.param.id);
+    const user = await User.findById(req.params.id);
     if(!user){
         return next(new ErrorResponse('Unable to find user with that ID',404));
     }
@@ -39,9 +39,9 @@ let createUser = asyncHandle(async(req,res,next)=>{
     });
 });
 let deleteUser = asyncHandle(async(req,res,next)=>{
-    const user = await User.findByIdAndDelete(req.param.id);
+    const user = await User.findByIdAndDelete(req.params.id);
     if(!user){
-        return next(new ErrorResponse('Unable to find user with that ID',404));
+        return next(new ErrorResponse('Unable to delete user with that ID',404));
     }
     res.status(200).json({
         status : 'succes',
@@ -51,7 +51,7 @@ let deleteUser = asyncHandle(async(req,res,next)=>{
     });
 });
 let updateUser = asyncHandle(async(req,res,next)=>{
-    const user = await User.findByIdAndUpdate(req.param.id);
+    const user = await User.findByIdAndUpdate(req.params.id);
     if(!user){
         return next(new ErrorResponse('Unable to find user with that ID',404));
     }
