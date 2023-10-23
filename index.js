@@ -4,7 +4,7 @@ const PORT = 3000;
 const {engine} = require("express-handlebars");
 const path = require('path')
 const connectDB = require('./config/database')
-const route = require('./routes/index')
+const route = require('./routes/v1/index')
 //static file
 app.use(express.static('public'))
 //view engine

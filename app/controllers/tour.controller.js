@@ -1,6 +1,7 @@
 const asyncHandle = require('../../middlewares/asyncHandle')
 const Tours = require('../models/tour');
 const APIFeatures = require('../../middlewares/APIFeatures');
+const ErrorResponse = require('../../middlewares/ErrorResponse');
 let getAllTours = asyncHandle(async(req, res, next) => {
     const features = new APIFeatures(Tours.find(), req.query)
       .filter()
@@ -18,6 +19,9 @@ let getAllTours = asyncHandle(async(req, res, next) => {
 });
 let getTour = asyncHandle(async(req,res,next)=>{
     const tour = await Tours.findById(req.params.id);
+    if(!tour){
+      return next(new ErrorResponse('Unable to find tour with that ID',404));
+    }
     res.status(200).json({
         status: 'success',
         total: tour.length,
@@ -27,46 +31,48 @@ let getTour = asyncHandle(async(req,res,next)=>{
     });
 });
 let createTour = asyncHandle(async (req, res, next) => {
-      const newTour = await Tours.create(req.body);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          newTour
-        },
-      });
+  try{
+    const newTour = await Tours.create(req.body);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        newTour
+      }
+    });
+  }catch(error){
+    res.status(201).json({
+      status: 'failed',
+      data: {
+        message: error.message
+      }
+    });
+  }
+      
     
   });
   let deleteTour = async(req,res,next)=>{
-    try{
-      const deleteTour = await Tours.findByIdAndDelete(req.params.id);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          deleteTour,
-        },
-      });
-    }catch(error){
-      res.status(400).json({
-        status: 'fail',
-        message: error.message,
-      });
+    const tour = await Tours.findByIdAndDelete(req.params.id);
+    if(!tour){
+      return next(new ErrorResponse('Unable to find tour with that ID',404));
     }
+    res.status(201).json({
+      status: 'success',
+      data: {
+        deleteTour,
+      },
+    });
   }
   let updateTour = async(req,res,next)=>{
-    try{
-      const updateTour = await Tours.findByIdAndUpdate(req.params.id, req.body);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          updateTour,
-        },
-      });
-    }catch(error){
-      res.status(400).json({
-        status: 'fail',
-        message: error.message,
-      });
+    const tour = await Tours.findByIdAndUpdate(req.params.id, req.body);
+    if(!tour){
+      return next(new ErrorResponse('Unable to find tour with that ID',404));
     }
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
   }
 module.exports = {getAllTours,getTour,createTour,deleteTour,updateTour}
 
