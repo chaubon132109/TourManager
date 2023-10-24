@@ -36,7 +36,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Please confirm your password'],
       validate: {
-        // This only works on CREATE and SAVE!!!
         validator: function (el) {
           return el === this.password;
         },
@@ -56,12 +55,17 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
-
+//get user (active not false)
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+//hash password and delete passwordConfirm before save to db
 userSchema.pre('save',async function(next){
   if(!this.isModified('password')) return next();
   //hash password
   this.password = await bcrypt.hash(this.password,12);
-  //delete password
+  //delete passwordConfirm
   this.passwordConfirm = undefined;
   next();
 });
@@ -83,3 +87,25 @@ userSchema.methods.checkPasswordMatch = async function(password){
   return await bcrypt.compare(password,this.password);
 };
 module.exports = mongoose.model('User', userSchema);
+//check changed password after JWT token is issued
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
+  if(this.passwordChangedAt){
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime()/1000,10
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+  return false;
+};
+//Creates and returns a token used to reset the password
+userSchema.methods.createPasswordResetToken = function(){
+  //tạo chuỗi ngẫu nhiên 32 bytes dạng hex string
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')//băm token
+    .update(resetToken)
+    .digest('hex');
+  //thời gian hết hạn 10m
+  this.passwordResetExpires = Date.now()+10 * 60 * 1000;
+  return resetToken;
+}
