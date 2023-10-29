@@ -4,6 +4,7 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+
 const userSchema = new Schema(
   {
     name: {
@@ -79,14 +80,13 @@ userSchema.pre('save',async function(next){
 userSchema.methods.signToken = function(){
   return jwt.sign({id: this._id},process.env.JWT_SECRET,{
     //set time
-    expiresIn : process.env.JWT_EXPRES_IN
+    expiresIn : process.env.JWT_EXPIRES_IN 
   });
 };
 //check password match
 userSchema.methods.checkPasswordMatch = async function(password){
   return await bcrypt.compare(password,this.password);
 };
-module.exports = mongoose.model('User', userSchema);
 //check changed password after JWT token is issued
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
   if(this.passwordChangedAt){
@@ -109,3 +109,4 @@ userSchema.methods.createPasswordResetToken = function(){
   this.passwordResetExpires = Date.now()+10 * 60 * 1000;
   return resetToken;
 }
+module.exports = mongoose.model('User', userSchema);

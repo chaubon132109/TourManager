@@ -62,4 +62,17 @@ let updateUser = asyncHandle(async(req,res,next)=>{
         }
     });
 });
+//after logged in
+let getMe = asyncHandle(async(req,res,next)=>{
+
+}); 
+let updateMe = asyncHandle(async(req,res,next)=>{
+
+});
+let deleteMe = asyncHandle(async(req,res,next)=>{
+
+});
+let updatePassword = asyncHandle(async(req,res,next)=>{
+
+});
 module.exports = {getAllUsers,getUser,createUser,deleteUser,updateUser};
