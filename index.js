@@ -3,10 +3,13 @@ const app = express();
 const dotenv = require('dotenv');
 const PORT = 3000||process.env.PORT;
 const {engine} = require('express-handlebars');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const connectDB = require('./config/database');
 const route = require('./routes/v1/index');
 dotenv.config();
+//cookieParser
+app.use(cookieParser());
 //static file
 app.use(express.static('public'))
 //view engine

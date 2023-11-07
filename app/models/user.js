@@ -80,7 +80,7 @@ userSchema.pre('save',async function(next){
 userSchema.methods.signToken = function(){
   return jwt.sign({id: this._id},process.env.JWT_SECRET,{
     //set time
-    expiresIn : process.env.JWT_EXPIRES_IN 
+    expiresIn : 3600
   });
 };
 //check password match

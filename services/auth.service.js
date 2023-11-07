@@ -50,11 +50,12 @@ let mailLogin = async(req,user)=>{
 let signCookie = async(req,res,token,user)=>{
     res.cookie('jwt',token,{
         expires : new Date(
-            Date.now() + process.env.JWT_EXPIRES_IN * 24 * 60 * 60 * 1000
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 *1000
         ),
         httpOnLy : true,
         secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
-    })
+    });
+    user.password = undefined;
 };
 let loggedout = async(req,res)=>{
     res.cookie('jwt','loggedout',{
