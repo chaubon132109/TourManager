@@ -1,2 +1,56 @@
-<h1>Example App: Home</h1>
-<img src="/public/1.jpg">
+<div class="content_findplace">
+    <img class="findplace_background" src="/img/tour-1-3.jpg" alt="">
+    <div class="cotent_findplace-text1">Find Next Place To Visit</div>
+    <div class="cotent_findplace-text2">Discover amzaing places at exclusive deals</div>
+    <form class="form_find" action="" method="post">
+        <div class="input_keywords">
+            <input type="text" name="keyword" id="find_keyword" placeholder="Keywords">
+            <i class="icon_after fa-solid fa-magnifying-glass"></i>
+        </div>
+        <select id="combo-box2" name="combo-box2">
+            <option value="" selected >Duration</option>
+            <option value="1">1 Day</option>
+            <option value="2-4">2-4 Days</option>
+            <option value="5-7">5-7 Days</option>
+            <option value="7+">7+ Days</option>
+        </select>
+        <button class="find_submit" type="submit">Search</button>
+    </form>
+</div>
+
+<div class="content_description">
+    <div class="content_advantage">
+        <div class="content_advantage-box">
+            <div class="box-icon">
+                <i class="fa-solid fa-cloud"></i>
+            </div>
+            <div class="box-text">
+                <h4>700+ DESTINATIONS</h4>
+            <div class="description">Our expert team handpicked all destinations in this site</div>
+            </div>
+        </div>
+        <div class="content_advantage-box">
+            <div class="box-icon">
+                <i class="fa-solid fa-tag"></i>
+            </div>
+            <div class="box-text">
+                <h4>BEST PRICE GUARANTEE</h4>
+            <div class="description">Price match within 48 hours of order confirmation</div>
+            </div>
+        </div>
+        <div class="content_advantage-box">
+            <div class="box-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="box-text">
+                <h4>TOP NOTCH SUPPORT</h4>
+            <div class="description">We are here to help, before, during, and even after your trip.</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content_tours">
+    {{#each tours}}
+        <h1>{{name}}</h1>
+    {{/each}}
+</div>

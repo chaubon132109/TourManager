@@ -13,11 +13,16 @@ app.use(cookieParser());
 //static file
 app.use(express.static('public'))
 //view engine
-app.engine("hbs",engine({
-    extname : '.hbs'
-}));
-app.set('view engine','hbs');
-app.set('views','./app/views');
+const hbs = engine({
+    extname: '.hbs',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+});
+app.engine('hbs', hbs);
+app.set('view engine', 'hbs');
+app.set('views', './app/views');
 //connect DB
 connectDB();
 app.use(express.json());

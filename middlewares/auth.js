@@ -34,9 +34,12 @@ let retrictTo = (...roles) =>{
     };
 };
 let isLogged = async(req, res, next)=>{
-    if(res.cookies.jwt){
+    if(!req.cookies.jwt) {
+        return next(); 
+    }
+    if(req.cookies.jwt){
         try {
-            const decode = promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+            const decode = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
             const currentUser = await User.findById(decode.id);
             if(!currentUser){
                 return next();
