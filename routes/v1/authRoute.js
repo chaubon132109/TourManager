@@ -9,7 +9,7 @@ route
     .post(authController.login)
 route
     .route('/logout')
-    .post(authController.logout)
+    .get(authController.logout)
 route
     .route('/forget-password')  
     .post(authController.forgetPassword)

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2>Login</h2>
+        <form>
+        <div class="user-box">
+            <input type="text" name="email" required="">
+            <label>Email</label>
+        </div>
+        <div class="user-box">
+            <input type="password" name="password" required="">
+            <label>Password</label>
+        </div>
+        <div class="error_message">
+            Đăng nhập thất bại
+        </div>
+        <div class="button">
+            <button id="login" type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Submit
+            </button>
+            <button id="back" type="button">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Back
+            </button>
+        </div>
+        </form>
+    </div>
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector('form');
+            const errorMessage = document.querySelector('.error_message');
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const email = document.querySelector('input[name="email"]').value;
+                const password = document.querySelector('input[name="password"]').value;
+                try {
+                    const response = await fetch('/api/v1/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+
+                        if (data.status === 'success') {
+                             window.history.back();
+                        } else {
+                            errorMessage.style.display = 'block';
+                        }
+                    } else {
+                        errorMessage.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    errorMessage.style.display = 'block';
+                }
+            });
+
+            const backButton = document.getElementById('back');
+            backButton.addEventListener('click', function () {
+                // Handle back button click event
+            });
+        });
+    </script>
+</body>
+</html>

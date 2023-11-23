@@ -34,24 +34,29 @@ let retrictTo = (...roles) =>{
     };
 };
 let isLogged = async(req, res, next)=>{
-    if(!req.cookies.jwt) {
-        return next(); 
-    }
-    if(req.cookies.jwt){
+    if (req.cookies.jwt) {
         try {
-            const decode = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-            const currentUser = await User.findById(decode.id);
-            if(!currentUser){
-                return next();
-            }
-            if(currentUser.passwordChangedAt(decode.iat)){
-                return next();
-            }
-            req.locals.user = currentUser;
+          const decoded = await promisify(jwt.verify)(
+            req.cookies.jwt,
+            process.env.JWT_SECRET
+          );
+    
+          const currentUser = await User.findById(decoded.id);
+    
+          if (!currentUser) {
             return next();
+          }
+    
+          if (currentUser.changedPasswordAfter(decoded.iat)) {
+            return next();
+          }
+    
+          res.locals.user = currentUser;
+          return next();
         } catch (error) {
-            return next;
+          return next();
         }
-    }
+      }
+    next();
 }
 module.exports = {protect, retrictTo, isLogged}

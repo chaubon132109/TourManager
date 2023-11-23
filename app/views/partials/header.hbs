@@ -16,23 +16,30 @@
         <a href="#" class="right__icon"><i class="fa-brands fa-google-plus"></i></a>
         <a href="#" class="right__icon"><i class="fa-brands fa-twitter"></i></a>
       </div>
+      {{#if user}}
       <div class="header-top__right-button">
-        <a href="login"><button class="header-top__button header-top__button--login"><i class="fa-solid fa-lock"></i>Login</button></a>
-        <a href="signout"><button class="header-top__button header-top__button--signout"><i class="fa-solid fa-user"></i>Sign out</button></a>
+        <a href="/me"><button class="header-top__button header-top__button--login"><i class="fa-solid fa-lock"></i>{{user.name}}</button></a>
+        <a href="/logout"><button class="header-top__button header-top__button--signout"><i class="fa-solid fa-user"></i>Log out</button></a>
       </div>
+      {{else}}
+      <div class="header-top__right-button">
+        <a href="/login"><button class="header-top__button header-top__button--login"><i class="fa-solid fa-lock"></i>Login</button></a>
+        <a href="/register"><button class="header-top__button header-top__button--signout"><i class="fa-solid fa-user"></i>Register</button></a>
+      </div>
+      {{/if}}
     </div>
   </div>
   <div class="header-bottom">
     <div class="header-bottom__logo">
-      <a href="#">
+      <a href="/">
         <img class="logo-img" src="/img/logo.png" alt="">
         <span class="company-name">HCTRAVEL</span>
       </a>
     </div>
     <nav class="header-bottom__nav">
       <ul>
-        <li><a href="#">HOME</a></li>
-        <li><a href="#">TOURS</a></li>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/tours">TOURS</a></li>
         <li><a href="#">ABOUT US</a></li>
         <li><a href="#">CONTACT US</a></li>
       </ul>

@@ -1,0 +1,231 @@
+<div class="contain_content">
+    <div class="tour_img-cover">
+        <img src="/img/tours/{{tour.imageCover}}" alt="">
+    </div>
+    <div class="tour_info">
+        <div class="tour_name1">
+            {{tour.name}}
+        </div>
+        <div class="tour_infor-basic">
+            {{tour.ratingsAverage}} <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="line"></div>
+        <div class="tour_summary">
+            <div class="mgb-20 tour_groupsize">
+               <i class="fa-solid fa-user-group"></i> Max Group Size : {{tour.maxGroupSize}}
+            </div>
+            <div class="mgb-20 tour_dur">
+               <i class="fa-solid fa-clock"></i> Duration : {{tour.duration}} days
+            </div>
+            <div class="mgb-20 tour_difficulty">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>  Difficulty : {{tour.difficulty}}
+            </div>
+            <div class="mgb-20 tour_ratingQuantity">
+               <i class="fa-solid fa-star"></i> Ratings Quantity : {{tour.ratingsQuantity}}
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="mb-20 summary">
+            <div class="title">
+                Summary
+            </div>
+            <div class="content pl-20">
+                {{tour.summary}}
+            </div>
+        </div>
+        <div class="mb-20 description">
+            <div class="title">
+                Description
+            </div>
+            <div class="content pl-20">
+                {{tour.description}}
+            </div>
+        </div>
+        <div class="mb-20 date_start">
+            <div class="title">
+                Date start 
+            </div>
+            <div class="content pl-20">
+                {{#each tour.startDates}}
+                    <div class="date-start"><i class="fa-solid fa-calendar-days"></i>Option : {{toLocaleDateString this 'en-GB'}}</div>
+                {{/each}}
+            </div> 
+        </div>
+        <div class="locations">
+            <div class="title">
+                Locations
+            </div>
+            <div class="content pl-20">
+                {{#each tour.locations}}
+                    <div class="day">
+                        Day {{this.day}}
+                        : {{this.description}}
+                    </div>
+                {{/each}}
+            </div> 
+        </div>
+        <div class="img">
+            <div class="title">
+                Image
+            </div>
+            <div class="content pl-20 slide-container">
+                {{#each tour.images}}
+                    <div class="slide">
+                        <div class="imgTour">
+                            <img src="/img/tours/{{this}}" alt="">
+                        </div>
+                    </div>
+                    <button class="prev-button1" onclick="changeSlide(-1)">&#10094;</button>
+                    <button class="next-button1" onclick="changeSlide(1)">&#10095;</button>
+                {{/each}}
+            </div> 
+        </div>
+        <div class="review">
+            <div class="title">
+                Reviews
+            </div>
+            <div id="three-reviews" class="three-reviews">
+                {{#each review3}}
+                    <div class="content pl-20 dpfl">
+                        <img src="/img/users/{{this.user.avatar}}" alt="" class="user_img">
+                        <div class="review_content">
+                            <div class="username">{{this.user.name}}</div>
+                            <div class="rating">{{this.rating}} <i class="fa-solid fa-star"></i></div>
+                            <div class="review">{{this.review}}</div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            <button type="button" id="getAll">Get All Reviews</button>
+            <div id="all-reviews" class="all-reviews">
+                {{#each review}}
+                    <div class="content pl-20 dpfl mb-20">
+                        <img src="/img/users/{{this.user.avatar}}" alt="" class="user_img">
+                        <div class="review_content">
+                            <div class="username">{{this.user.name}}</div>
+                            <div class="rating">{{this.rating}} <i class="fa-solid fa-star"></i></div>
+                            <div class="review">{{this.review}}</div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            <button type="button" id="reduce">Reduce Reviews</button>
+        </div>
+    </div>
+    <div class="book_tour">
+        <div class="book_title">
+            BOOK NOW
+        </div>
+        <div class="book_price">
+            <i class="fa-regular fa-money-bill-1"></i> Price :  <span>${{tour.price}}</span>
+        </div>
+        {{#if user}}
+        <div class="book_date">
+            <div class="book_date-title"><i class="fa-regular fa-calendar-days"></i>Date Start</div>
+            <input type="text" id="tourId" value="{{tour.id}}" hidden="true">
+            <select id="date">
+                {{#each tour.startDates}}
+                    <option value="{{this}}">{{toLocaleDateString this 'en-GB'}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="book_note">
+            <div class="book_note-title"><i class="fa-regular fa-note-sticky"></i>Note</div>
+            <textarea id="note"></textarea>
+        </div>
+        <div class="book_check">
+            <input type="checkbox" name="" id="checkPolicy"><p>* I agree with Terms of Service and Privacy Statement. </p>
+        </div>
+            <input type="submit" value="PAY NOW" id="btnPayNow">
+        {{else}}
+            <a href="/login"><input type="submit" value="LOGIN TO BOOKING" id="btnLogin"></a>
+        {{/if}}
+    </div>
+
+</div>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    let threeReviewsEl = document.getElementById('three-reviews');
+    let btnGetAllEl = document.getElementById('getAll');
+    let allReviewsEl = document.getElementById('all-reviews');
+    let btnReduce = document.getElementById('reduce');
+    btnGetAllEl.addEventListener('click', () => {
+
+        threeReviewsEl.style.display = 'none';
+        btnGetAllEl.style.display = 'none';
+
+        allReviewsEl.style.display = 'grid';
+        btnReduce.style.display = 'block';
+
+    });
+    btnReduce.addEventListener('click', () => {
+
+        threeReviewsEl.style.display = 'flex';
+        btnGetAllEl.style.display = 'block';
+
+        allReviewsEl.style.display = 'none';
+        btnReduce.style.display = 'none';
+
+    });
+     var currentSlide = 0;
+    var slides = document.getElementsByClassName('slide');
+    slides[currentSlide].style.display = 'block';
+
+    function changeSlide(n) {
+      currentSlide += n;
+
+      if (currentSlide < 0) {
+        currentSlide = slides.length - 1;
+      } else if (currentSlide >= slides.length) {
+        currentSlide = 0;
+      }
+
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+      }
+
+      slides[currentSlide].style.display = 'block';
+    }
+    const stripe = Stripe('pk_test_51ODTdCHQryJy9bN9Ds3LpG9acgq6myGbads6eOLeQ4rSncQtFv51KsVom10BVzaSOKAHgq5xuDl2LsDbQY5hYuQm00gGjoSO3c');
+    const checkbox = document.getElementById('checkPolicy');
+    const submitBtn =  document.getElementById('btnPayNow');
+    let appState = {
+        policyAccepted: false  
+    };
+    checkbox.onchange = function() {
+        const checked = this.checked;
+        appState.policyAccepted = checked;
+        if(checked){
+            submitBtn.style.backgroundColor = '#f97150';
+            submitBtn.style.cursor = 'pointer';
+            document.getElementById('btnPayNow').addEventListener('click', pay);
+            async function pay() {
+                const dateString  = document.getElementById('date').value; 
+                const date = new Date(dateString);
+                const dateStart = date.toISOString();
+                const note = document.getElementById('note').value;
+                const tourId = document.getElementById('tourId').value;
+                try {
+                    const res = await fetch('/api/v1/booking/checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dateStart,
+                        note,
+                        tourId,
+                    })
+                    });
+                    const data = await res.json();
+                    await stripe.redirectToCheckout({ sessionId: data.session.id});
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        }else{
+            submitBtn.style.backgroundColor = 'gray';
+            submitBtn.style.cursor = 'not-allowed';
+        }
+    }
+</script>

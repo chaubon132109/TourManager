@@ -1,0 +1,119 @@
+<form id="form-reg">
+    <div class="input">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <div class="error" id="nameError"></div>
+    </div>
+    
+    <div class="input">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+        <div class="error" id="emailError"></div>
+    </div>
+    <div class="input">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <div class="error" id="passwordError"></div>
+    </div>
+    <div class="input">
+        <label for="passwordConfirm">Confirm Password:</label>
+        <input type="password" id="passwordConfirm" name="passwordConfirm">
+        <div class="error" id="passwordConfirmError"></div>
+    </div>
+    <div class="error" id="RegError"></div>
+    <input class="submit" type="submit" value="Register"></input>
+</form>
+
+<script>
+    const form = document.getElementById('form-reg');
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('nameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('passwordConfirmError').textContent = '';  
+        let nameValid = validateName();
+        let emailValid = validateEmail();
+        let passwordValid = validatePassword();
+        let passwordConfirmValid = validatePasswordConfirm();
+        if(!nameValid || !emailValid || !passwordValid || !passwordConfirmValid) {
+            return;
+        }
+        submitForm();
+    });
+
+    function validateName() {
+        if(!form.name.value) {
+            document.getElementById('nameError').textContent = 'Please enter your name';
+            return false;
+        }
+        return true;
+    }
+
+    function validateEmail() { 
+        if(!form.email.value) {
+            document.getElementById('emailError').textContent = 'Please enter your email';
+            return false;
+        } else if(!isValidEmail(form.email.value)) {
+            document.getElementById('emailError').textContent = 'Please enter a valid email';
+            return false;
+        }
+        return true;
+    }
+
+    function validatePassword() {
+        if(!form.password.value) {
+            document.getElementById('passwordError').textContent = 'Please enter a password';
+            return false;
+        } else if(form.password.value.length < 6){
+            document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+            return false;
+        }
+        return true;
+    }
+
+    function validatePasswordConfirm() {
+        if(form.password.value !== form.passwordConfirm.value) {
+            document.getElementById('passwordConfirmError').textContent = 'Passwords do not match';
+            return false;
+        }
+        return true;
+    }
+
+    function isValidEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    async function submitForm() {
+        const formData = {
+            name: form.name.value,
+            email: form.email.value,
+            password: form.password.value,
+            passwordConfirm: form.passwordConfirm.value  
+        };
+        try {
+            const response = await fetch('/api/v1/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.status === 'success') {
+                        window.location.href = '/login';
+                } else {
+                    document.getElementById('RegError').textContent = 'Error Register';
+                }
+            } else {
+                document.getElementById('RegError').textContent = 'Error Register';
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+            document.getElementById('RegError').textContent = 'Error Register';
+        }
+
+    }
+</script>

@@ -11,9 +11,6 @@ let login = asyncHandler(async (req,res,next)=>{
         status : 'success',
         token: accessToken,
         message : userLogin,
-        date : new Date(
-            Date.now() + process.env.JWT_EXPIRES_IN * 24 * 60 * 60
-        )
     });
 
 })
