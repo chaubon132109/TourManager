@@ -1,6 +1,8 @@
 body {
   margin: 0;
-  padding: 0; }
+  padding: 0; 
+  font-family: cursive;
+}
 
 a {
   text-decoration: none;
@@ -15,7 +17,9 @@ ul {
   justify-content: space-between;
   border-bottom: 1px solid gray;
   margin-bottom: 15px; }
-
+.header-top__text{
+  line-height: 33px;
+}
 .header-top__left {
   display: flex;
   margin: 15px 50px;
@@ -37,7 +41,9 @@ ul {
 .header-top__button {
   padding: 16px;
   border: none;
-  background-color: white; }
+  background-color: white; 
+  line-height: 31px;
+}
 
 .fa-solid {
   padding-right: 15px; }
@@ -722,11 +728,11 @@ input[type="password"] {
   width: 100%;
   padding: 15px;
   border: none;
-  background-color: #f97150;
+  background-color: gray;
   color: white;
   font-weight: bold;
   font-size: 20px;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 #btnLogin{
   width: 100%;
@@ -737,4 +743,11 @@ input[type="password"] {
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
+}
+.allTours_title{
+  text-align: center;
+  font-size: 46px;
+  font-weight: bold;
+  margin: 60px 0px;
+  color: #f97150;
 }

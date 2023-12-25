@@ -61,7 +61,7 @@
                         const data = await response.json();
 
                         if (data.status === 'success') {
-                             window.history.back();
+                             window.location.href = '/';
                         } else {
                             errorMessage.style.display = 'block';
                         }
@@ -76,7 +76,7 @@
 
             const backButton = document.getElementById('back');
             backButton.addEventListener('click', function () {
-                // Handle back button click event
+                window.history.back();
             });
         });
     </script>

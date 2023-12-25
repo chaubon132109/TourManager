@@ -1,0 +1,31 @@
+<div class="allTours">
+    <div class="allTours_title">
+        MY TOURS
+    </div>
+    <div class="contain-tour">
+        {{#each tours}}
+            <div class="contain-tour--body">
+                <div class="tour-img--body">
+                    <img src="/img/tours/{{images.[0]}}" class="tour-img">
+                </div>
+                <div class="tour-information">
+                    <div class="tour-bestseller">
+                        Best Seller
+                    </div>
+                    <div class="tour_name">
+                        <a href="/tour/{{slug}}">{{name}}</a>
+                    </div>
+                    <div class="tour_duration">
+                        {{duration}} days
+                    </div>
+                    <div class="tour_rating">
+                        {{ratingsAverage}} <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="tour_price">
+                        <div class="tour_price-current">${{price}}</div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

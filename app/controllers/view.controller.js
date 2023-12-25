@@ -1,4 +1,5 @@
 const Tour = require('../models/tour');
+const User = require('../models/user');
 const Review = require('../models/review');
 const Booking = require('../models/booking');
 const asyncHandle = require('../../middlewares/asyncHandle');
@@ -38,19 +39,31 @@ let getTourBySlug = asyncHandle(async(req, res, next)=>{
         review3
     });
 });
-let getAllTour = asyncHandle(async(req, res, next)=>{
-    const tour = await Tour.find();
-    res.render("allTour.hbs",{
-        title : tour.name,
-        tour
+let getAllTours = asyncHandle(async(req, res, next)=>{
+    const tours = await Tour.find();
+    res.render("allTours.hbs",{
+        title : 'All Tour',
+        tours
     });
 });
 let getMyTour = asyncHandle(async(req,res,next)=>{
     if(req.user){
         const booking = await Booking.find({user: req.user._id});
-        res.status(200).json({
-            booking
+        const tourIds = booking.map((e) => e.tour);
+        const tours = await Tour.find({ _id: { $in: tourIds } });
+        res.render('myTour.hbs',{
+            title : 'My Tour',
+            tours
         })
     }
 })
-module.exports = {getHomePage,getLoginPage,logout,getRegPage,getTourBySlug,getMyTour};
+let getMyInfo = asyncHandle(async(req,res,next)=>{
+    if(req.user){
+        const user = await User.findById(req.user._id);
+        res.status(200).json({
+            title : 'Me',
+            user
+        })
+    }
+})
+module.exports = {getHomePage,getLoginPage,logout,getRegPage,getTourBySlug,getMyTour,getAllTours,getMyInfo};

@@ -18,6 +18,12 @@ router
     viewController.getTourBySlug
   );
 router
+  .route('/alltours')
+  .get(
+    authMiddleware.isLogged,
+    viewController.getAllTours
+  );
+router
   .route('/login')
   .get(
     authMiddleware.isLogged,
@@ -40,5 +46,9 @@ router
   .get(
     viewController.getMyTour
   );
-
+router
+  .route('/me')
+  .get(
+    viewController.getMyInfo
+  );
 module.exports = router

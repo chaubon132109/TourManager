@@ -14,14 +14,18 @@ let protect = async(req, res, next) =>{
     if(!token){
         return next(new ErrorRespone('You are not logged in! Please log in to get access.', 401));
     }
-    const decode = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-    const currentUser = await User.findById(decode.id);
-    if(!currentUser){
-        return next(new ErrorRespone('The user belonging to this token does no longer exist.', 401));
+    try{
+      const decode = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
+      const currentUser = await User.findById(decode.id);
+      if(!currentUser){
+          return next(new ErrorRespone('The user belonging to this token does no longer exist.', 401));
+      }
+      req.user = currentUser;
+      res.locals.user = currentUser;
+      next();
+    }catch(error){
+      return next();
     }
-    req.user = currentUser;
-    res.locals.user = currentUser;
-    next();
 };
 let retrictTo = (...roles) =>{
     return (req, res, next)=>{

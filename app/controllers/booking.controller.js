@@ -49,7 +49,7 @@ let createBookingCheckout = asyncHandle(async (req,res,next)=>{
     if (!tour || !user || !price || !dateStart) return next();
     await Booking.create({ tour, user, price,dateStart });
 
-    res.redirect(req.originalUrl.split('?')[0]);
+    res.redirect('/mytour');
 });
 let createBooking = asyncHandle(async(req,res,next)=>{
     const newBooking = await Booking.create(req.body)
