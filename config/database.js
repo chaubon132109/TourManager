@@ -8,6 +8,6 @@ const connectDB = async() =>{
             useUnifiedTopology: true
         })
         .then(()=>console.log('Database connected'))
-        .catch((err)=>console.log('Database failed'));
+        .catch((err)=>console.log('Connect failded'));
 }
 module.exports = connectDB;
