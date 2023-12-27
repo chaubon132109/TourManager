@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config();
 const connectDB = async() =>{
     await mongoose.set('strictQuery',false);
     await mongoose
-        .connect(process.env.MONGODB_URL,{
+        .connect("mongodb+srv://dbUser:chaubon1321@tour.etqmytu.mongodb.net/travel_test",{
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
