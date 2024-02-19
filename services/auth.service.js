@@ -64,7 +64,7 @@ let loggedout = async(req,res)=>{
     });
 };
 let mailForgotPassword = async(req,user,resetToken)=>{
-    const url = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${resetToken}`;
+    const url = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
     const options = {
         email: user.email,
         subject: 'Your password reset token (valid for 10 minutes)',

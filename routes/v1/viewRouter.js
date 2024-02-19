@@ -40,6 +40,15 @@ router
   .get(
     viewController.getRegPage
   );
+router
+  .route('/reset-password/:token')
+  .get(
+    viewController.resetPassword
+  );
+router
+  .route('/forget-password')
+  .get(viewController.forgetPassword
+  );
 router.use(authMiddleware.protect);
 router
   .route('/mytour')

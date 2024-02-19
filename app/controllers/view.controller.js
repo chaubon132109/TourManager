@@ -3,7 +3,8 @@ const User = require('../models/user');
 const Review = require('../models/review');
 const Booking = require('../models/booking');
 const asyncHandle = require('../../middlewares/asyncHandle');
-const ErrorRespone = require('../../middlewares/ErrorResponse');
+const ErrorResponse = require('../../middlewares/ErrorResponse');
+const crypto = require('crypto');
 const auth = require('../../services/auth.service');
 
 let getHomePage = asyncHandle(async(req, res, next)=>{
@@ -66,4 +67,27 @@ let getMyInfo = asyncHandle(async(req,res,next)=>{
         })
     }
 })
-module.exports = {getHomePage,getLoginPage,logout,getRegPage,getTourBySlug,getMyTour,getAllTours,getMyInfo};
+let forgetPassword = asyncHandle(async(req,res,next)=>{
+    res.render('forgetpassword.hbs',{
+        layout: false,
+        title : 'forgetPassword',
+    });
+})
+let resetPassword = asyncHandle(async(req,res,next)=>{
+    const hashToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+    const user = await User.findOne({
+        passwordResetToken : hashToken,
+        passwordResetExpires : {$gt: Date.now()}
+    });
+    if(!user){
+        throw new ErrorResponse('Token is invalid or has expired', 400);
+    }
+    res.render('resetpassword.hbs',{
+        layout: false,
+        title : 'Reset Password',
+    });
+})
+module.exports = {getHomePage,getLoginPage,logout,getRegPage,getTourBySlug,getMyTour,getAllTours,getMyInfo,forgetPassword,resetPassword};

@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config();
 const connectDB = async () => {
     try {
       await mongoose.connect(
-        "mongodb+srv://dbUser:chaubon1321@tour.etqmytu.mongodb.net/travel_test",
+        "mongodb://localhost:27017/travel_test",
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,

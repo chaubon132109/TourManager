@@ -11,7 +11,7 @@ route
     .route('/logout')
     .get(authController.logout)
 route
-    .route('/forget-password')  
+    .route('/forget-password')
     .post(authController.forgetPassword)
 route
     .route('/reset-password/:token')  

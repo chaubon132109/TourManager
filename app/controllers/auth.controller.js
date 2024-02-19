@@ -41,7 +41,7 @@ let forgetPassword = asyncHandler(async(req,res,next)=>{
     const options = await authService.mailForgotPassword(req,user,tokenResetPassword);
     await emailService.sendMail(options);
     res.status(200).json({
-        status : 'succes',
+        status : 'success',
         message : 'The token is send to email!',
         user : user,
         option : options
